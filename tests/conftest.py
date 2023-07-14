@@ -38,3 +38,29 @@ def post_update_data():
 @pytest.fixture
 def post_pk_for_args(post):
     return post.pk,
+
+
+@pytest.fixture
+def author_user(django_user_model):
+    return django_user_model.objects.create(username="author")
+
+
+@pytest.fixture
+def author_client(author_user):
+    client = APIClient()
+    client.force_authenticate(user=author_user)
+
+    return client
+
+
+@pytest.fixture
+def reader_user(django_user_model):
+    return django_user_model.objects.create(username="reader")
+
+
+@pytest.fixture
+def reader_client(reader_user):
+    client = APIClient()
+    client.force_authenticate(user=reader_user)
+
+    return client

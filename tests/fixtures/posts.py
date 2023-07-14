@@ -5,8 +5,8 @@ from conftest import N_PER_FIXTURE
 
 
 @pytest.fixture
-def post(mixer: Mixer):
-    return mixer.blend('posts.Post')
+def post(mixer: Mixer, author_user):
+    return mixer.blend('posts.Post', author=author_user)
 
 
 @pytest.fixture
