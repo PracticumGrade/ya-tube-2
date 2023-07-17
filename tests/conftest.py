@@ -12,6 +12,7 @@ BASE_GROUP_URL = "/api/v1/groups/"
 pytest_plugins = [
     'fixtures.posts',
     'fixtures.groups',
+    'fixtures.comments',
 ]
 
 
