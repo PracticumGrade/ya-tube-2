@@ -47,7 +47,7 @@ def test_availability_post_for_author(author_client, post, method, name, args, s
     assert response.status_code == status_code, (
         f"Убедитесь, что при отправке {method}-запроса на url `{url}` "
         f"для автора поста возвращается статус-код {status_code}. "
-        f"Проверьте что верно настроены права доступа к автора к своему посту."
+        f"Проверьте что верно настроены права доступа автора к своему посту."
     )
 
 
@@ -68,5 +68,5 @@ def test_availability_post_for_reader(reader_client, post, method, name, args, s
     assert response.status_code == status_code, (
         f"Убедитесь, что при отправке {method}-запроса на url `{url}` "
         f"к чужому посту возвращается статус-код {status_code}. "
-        f"Проверьте что верно настроены права доступа к пользователя к чужому посту."
+        f"Проверьте что верно настроены права доступа пользователя к чужому посту."
     )
