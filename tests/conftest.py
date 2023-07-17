@@ -5,8 +5,13 @@ from mixer.backend.django import mixer as _mixer
 N_PER_FIXTURE = 3
 POST_FIELDS = ["id", "text", "pub_date"]
 
+
+BASE_GROUP_URL = "/api/v1/groups/"
+
+
 pytest_plugins = [
     'fixtures.posts',
+    'fixtures.groups',
 ]
 
 
