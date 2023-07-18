@@ -6,7 +6,14 @@ N_PER_FIXTURE = 3
 POST_FIELDS = ["id", "text", "pub_date"]
 
 
-BASE_GROUP_URL = "/api/v1/groups/"
+MAPPING = {
+    "post-list": "/api/v1/posts/",
+    "post-detail": "/api/v1/posts/{0}/",
+    "group-list": "/api/v1/groups/",
+    "group-detail": "/api/v1/groups/{0}/",
+    "comment-list": "/api/v1/posts/{0}/comments/",
+    "comment-detail": "/api/v1/posts/{0}/comments/{1}/",
+}
 
 
 pytest_plugins = [
@@ -25,25 +32,6 @@ def mixer():
 def anonymous_client():
     client = APIClient()
     return client
-
-
-@pytest.fixture
-def post_create_data():
-    return {
-        "text": "Текст заметки",
-    }
-
-
-@pytest.fixture
-def post_update_data():
-    return {
-        "text": "Новый текст заметки",
-    }
-
-
-@pytest.fixture
-def post_pk_for_args(post):
-    return post.pk,
 
 
 @pytest.fixture

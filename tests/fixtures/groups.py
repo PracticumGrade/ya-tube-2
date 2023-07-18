@@ -1,7 +1,7 @@
 import pytest
 from mixer.backend.django import Mixer
 
-from conftest import N_PER_FIXTURE, BASE_GROUP_URL
+from conftest import N_PER_FIXTURE
 
 
 @pytest.fixture
@@ -17,13 +17,3 @@ def groups(mixer: Mixer):
 @pytest.fixture
 def group_pk_for_args(group):
     return group.pk,
-
-
-@pytest.fixture
-def group_list_url():
-    return BASE_GROUP_URL
-
-
-@pytest.fixture
-def group_detail_url(group_pk_for_args):
-    return f"{BASE_GROUP_URL}{group_pk_for_args[0]}/"

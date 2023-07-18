@@ -17,18 +17,8 @@ def comments_for_post(mixer: Mixer, post):
 
 
 @pytest.fixture
-def comment_pk_for_args(comment_for_post):
-    return comment_for_post.pk,
-
-
-@pytest.fixture
-def comment_list_for_post_url(post_pk_for_args, comment_pk_for_args):
-    return f"/api/v1/posts/{post_pk_for_args[0]}/comments/"
-
-
-@pytest.fixture
-def comment_detail_for_post_url(post_pk_for_args, comment_pk_for_args):
-    return f"/api/v1/posts/{post_pk_for_args[0]}/comments/{comment_pk_for_args[0]}/"
+def post_and_comment_pk_for_args(comment_for_post):
+    return comment_for_post.post.pk, comment_for_post.pk
 
 
 @pytest.fixture

@@ -1,22 +1,25 @@
 import pytest
 from rest_framework import status
 
+from utils import reverse
+
 pytestmark = [
     pytest.mark.django_db
 ]
 
 
 @pytest.mark.parametrize(
-    "method, url, data", [
-        ("GET", pytest.lazy_fixture("comment_list_for_post_url"), None,),
-        ("POST", pytest.lazy_fixture("comment_list_for_post_url"), pytest.lazy_fixture("comment_create_data"),),
-        ("GET", pytest.lazy_fixture("comment_detail_for_post_url"), None,),
-        ("PUT", pytest.lazy_fixture("comment_detail_for_post_url"), pytest.lazy_fixture("comment_update_data"),),
-        ("PATCH", pytest.lazy_fixture("comment_detail_for_post_url"), None,),
-        ("DELETE", pytest.lazy_fixture("comment_detail_for_post_url"), None,),
+    "method, name, args, data", [
+        ("GET", "comment-list", pytest.lazy_fixture("post_and_comment_pk_for_args"), None,),
+        ("POST", "comment-list", pytest.lazy_fixture("post_and_comment_pk_for_args"), pytest.lazy_fixture("comment_create_data"),),
+        ("GET", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), None,),
+        ("PUT", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), pytest.lazy_fixture("comment_update_data"),),
+        ("PATCH", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), None,),
+        ("DELETE", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), None,),
     ]
 )
-def test_not_availability_for_for_anonymous_user(anonymous_client, comment_for_post, method, url, data):
+def test_not_availability_for_for_anonymous_user(anonymous_client, comment_for_post, method, name, args, data):
+    url = reverse(name, args=args)
     request_method = getattr(anonymous_client, method.lower())
     response = request_method(url, data=data)
 
@@ -28,16 +31,17 @@ def test_not_availability_for_for_anonymous_user(anonymous_client, comment_for_p
 
 
 @pytest.mark.parametrize(
-    "method,url,status_code,data", [
-        ("GET", pytest.lazy_fixture("comment_list_for_post_url"), status.HTTP_200_OK, None,),
-        ("POST", pytest.lazy_fixture("comment_list_for_post_url"), status.HTTP_201_CREATED, pytest.lazy_fixture("comment_create_data"),),
-        ("GET", pytest.lazy_fixture("comment_detail_for_post_url"), status.HTTP_200_OK, None,),
-        ("PUT", pytest.lazy_fixture("comment_detail_for_post_url"), status.HTTP_200_OK, pytest.lazy_fixture("comment_update_data"),),
-        ("PATCH", pytest.lazy_fixture("comment_detail_for_post_url"), status.HTTP_200_OK, None,),
-        ("DELETE", pytest.lazy_fixture("comment_detail_for_post_url"), status.HTTP_204_NO_CONTENT, None,),
+    "method, name, args, status_code, data", [
+        ("GET", "comment-list", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_200_OK, None,),
+        ("POST", "comment-list", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_201_CREATED, pytest.lazy_fixture("comment_create_data"),),
+        ("GET", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_200_OK, None,),
+        ("PUT", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_200_OK, pytest.lazy_fixture("comment_update_data"),),
+        ("PATCH", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_200_OK, None,),
+        ("DELETE", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_204_NO_CONTENT, None,),
     ]
 )
-def test_availability_comment_for_author(author_client, comment_for_post, method, url, status_code, data):
+def test_availability_comment_for_author(author_client, comment_for_post, method, name, args, status_code, data):
+    url = reverse(name, args=args)
     request_method = getattr(author_client, method.lower())
     response = request_method(url, data=data)
 
@@ -49,15 +53,16 @@ def test_availability_comment_for_author(author_client, comment_for_post, method
 
 
 @pytest.mark.parametrize(
-    "method,url,status_code,data", [
-        ("GET", pytest.lazy_fixture("comment_list_for_post_url"), status.HTTP_200_OK, None,),
-        ("GET", pytest.lazy_fixture("comment_detail_for_post_url"), status.HTTP_200_OK, None,),
-        ("PUT", pytest.lazy_fixture("comment_detail_for_post_url"), status.HTTP_403_FORBIDDEN, pytest.lazy_fixture("comment_update_data"),),
-        ("PATCH", pytest.lazy_fixture("comment_detail_for_post_url"), status.HTTP_403_FORBIDDEN, None,),
-        ("DELETE", pytest.lazy_fixture("comment_detail_for_post_url"), status.HTTP_403_FORBIDDEN, None,),
+    "method, name, args, status_code, data", [
+        ("GET", "comment-list", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_200_OK, None,),
+        ("GET", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_200_OK, None,),
+        ("PUT", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_403_FORBIDDEN, pytest.lazy_fixture("comment_update_data"),),
+        ("PATCH", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_403_FORBIDDEN, None,),
+        ("DELETE", "comment-detail", pytest.lazy_fixture("post_and_comment_pk_for_args"), status.HTTP_403_FORBIDDEN, None,),
     ]
 )
-def test_availability_post_for_reader(reader_client, post, method, url, status_code, data):
+def test_availability_post_for_reader(reader_client, post, method, name, args, status_code, data):
+    url = reverse(name, args=args)
     request_method = getattr(reader_client, method.lower())
     response = request_method(url, data=data)
 
@@ -69,16 +74,17 @@ def test_availability_post_for_reader(reader_client, post, method, url, status_c
 
 
 @pytest.mark.parametrize(
-    "method,data", [
-        ("GET", None,),
-        ("PUT", pytest.lazy_fixture("comment_update_data"),),
-        ("PATCH", None,),
-        ("DELETE", None,),
+    "method, name, data", [
+        ("GET", "comment-detail", None,),
+        ("PUT", "comment-detail", pytest.lazy_fixture("comment_update_data"),),
+        ("PATCH", "comment-detail", None,),
+        ("DELETE", "comment-detail", None,),
     ]
 )
-def test_not_found_post(author_client, method, data, comment_list_for_post_url):
+def test_not_found_post(author_client, post_pk_for_args, method, name, data):
     does_not_exists_pk = 123456789,
-    url = f"{comment_list_for_post_url}{does_not_exists_pk}/"
+    args = (post_pk_for_args, does_not_exists_pk)
+    url = reverse(name, args=args)
     request_method = getattr(author_client, method.lower())
     response = request_method(url, data=data)
 
