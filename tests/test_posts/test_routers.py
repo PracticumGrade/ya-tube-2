@@ -70,3 +70,24 @@ def test_availability_post_for_reader(reader_client, post, method, name, args, s
         f"к чужому посту возвращается статус-код {status_code}. "
         f"Проверьте что верно настроены права доступа пользователя к чужому посту."
     )
+
+
+@pytest.mark.parametrize(
+    "method,data", [
+        ("GET", None,),
+        ("PUT", pytest.lazy_fixture("post_update_data"),),
+        ("PATCH", None,),
+        ("DELETE", None,),
+    ]
+)
+def test_not_found_post(author_client, method, data):
+    does_not_exists_pk = 123456789,
+    url = reverse("post-detail", args=does_not_exists_pk)
+    request_method = getattr(author_client, method.lower())
+    response = request_method(url, data=data)
+
+    status_code = status.HTTP_404_NOT_FOUND
+    assert response.status_code == status_code, (
+        f"Убедитесь, что при отправке {method}-запроса на url `{url}` "
+        f"для получения несуществующего объекта возвращается статус-код {status_code}"
+    )
