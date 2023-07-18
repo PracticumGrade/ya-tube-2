@@ -1,6 +1,7 @@
 import pytest
 from django.shortcuts import reverse
 from rest_framework import status
+from rest_framework.viewsets import ModelViewSet
 
 pytestmark = [
     pytest.mark.django_db
@@ -90,4 +91,27 @@ def test_not_found_post(author_client, method, data):
     assert response.status_code == status_code, (
         f"Убедитесь, что при отправке {method}-запроса на url `{url}` "
         f"для получения несуществующего объекта возвращается статус-код {status_code}"
+    )
+
+
+@pytest.mark.parametrize(
+    "method,name,args,data", [
+        ("GET", "post-list", None, None,),
+        ("POST", "post-list", None, pytest.lazy_fixture("post_create_data"),),
+        ("GET", "post-detail", pytest.lazy_fixture("post_pk_for_args"), None,),
+        ("PUT", "post-detail", pytest.lazy_fixture("post_pk_for_args"), pytest.lazy_fixture("post_update_data"),),
+        ("PATCH", "post-detail", pytest.lazy_fixture("post_pk_for_args"), None,),
+        ("DELETE", "post-detail", pytest.lazy_fixture("post_pk_for_args"), None,),
+    ]
+)
+def test_posts_use_modelviewset(anonymous_client, post, method, name, args, data):
+    url = reverse(name, args=args)
+    request_method = getattr(anonymous_client, method.lower())
+    response = request_method(url, data=data)
+
+    view = response.renderer_context["view"]
+
+    assert isinstance(view, ModelViewSet), (
+        f"Убедитесь, что обработчик {method}-запроса на url `{url}`"
+        f"реализован с помощью `ModelViewSet`"
     )
