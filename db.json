@@ -1,0 +1,116 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$nGSYyER43k8MEMtB0ntKOA$4QK6lq9VUVtWxtdoNvSsdU+MWJl3TbbwAA8bt5WjB/k=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "author",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-07-20T15:42:35.463Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$QAl0vhW8O2fQKh7hVmIyDC$+OeP4vg8XnX6RDTzH7GimECgIJSD/i9fu7HFXn73tP4=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "reader",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-07-20T15:42:52.861Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "posts.group",
+    "pk": 1,
+    "fields": {
+        "title": "IT Группа 1",
+        "slug": "it-group-1",
+        "description": "Описание IT группы 1"
+    }
+},
+{
+    "model": "posts.group",
+    "pk": 2,
+    "fields": {
+        "title": "IT Группа 2",
+        "slug": "it-group-2",
+        "description": "Описание IT группы 2"
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 1,
+    "fields": {
+        "text": "Python — легкий и мощный язык программирования",
+        "pub_date": "2023-07-11T12:00:00Z",
+        "author": 1,
+        "group": 1
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 2,
+    "fields": {
+        "text": "Влияние искусственного интеллекта на будущее IT-индустрии",
+        "pub_date": "2023-07-10T10:30:00Z",
+        "author": 2,
+        "group": 2
+    }
+},
+{
+    "model": "posts.post",
+    "pk": 3,
+    "fields": {
+        "text": "Как выбрать подходящий фреймворк для веб-разработки?",
+        "pub_date": "2023-07-09T15:45:00Z",
+        "author": 1,
+        "group": null
+    }
+},
+{
+    "model": "posts.comment",
+    "pk": 1,
+    "fields": {
+        "author": 1,
+        "post": 1,
+        "text": "Отличный пост!",
+        "created": "2023-07-11T14:00:00Z"
+    }
+},
+{
+    "model": "posts.comment",
+    "pk": 2,
+    "fields": {
+        "author": 2,
+        "post": 1,
+        "text": "Согласен с автором.",
+        "created": "2023-07-11T15:30:00Z"
+    }
+},
+{
+    "model": "posts.comment",
+    "pk": 3,
+    "fields": {
+        "author": 1,
+        "post": 2,
+        "text": "Здесь должен быть комментарий, но его нет.",
+        "created": "2023-07-10T12:45:00Z"
+    }
+}
+]
